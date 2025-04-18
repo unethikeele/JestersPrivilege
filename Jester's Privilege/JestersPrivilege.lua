@@ -664,7 +664,7 @@ SMODS.Joker {
       "Every item purchased", "from the shop adds", "{X:mult,C:white}X#2#{} to this card", "{C:inactive}Currently {X:mult,C:white}X#1#{} {C:inactive}Mult"
     }
   },
-  config = { extra = { x_mult = 1, x_mult_gain = 0.05 } },
+  config = { extra = { x_mult = 1, x_mult_gain = 0.05, seen = {} } },
   rarity = 3,
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 1, y = 0 },
@@ -675,27 +675,39 @@ SMODS.Joker {
   eternal_compat = true,
   perishable_compat = true,
 
-
   loc_vars = function(self, info_queue, card)
-    return { vars = {card.ability.extra.x_mult, card.ability.extra.x_mult_gain } }
+    return { vars = { card.ability.extra.x_mult, card.ability.extra.x_mult_gain } }
   end,
 
   calculate = function(self, card, context)
-    if context.buying_card or context.open_booster and not context.blueprint and not (context.card == card) then
-        card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_gain
-            G.E_MANAGER:add_event(Event({
-                    func = function()
-                        card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}); return true
-                        end
-                }))
-                end
-            if context.cardarea == G.jokers and not context.before and not context.after then
-                return {
-                    message = localize {type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult} },
-                    Xmult_mod = card.ability.extra.x_mult
-                }
-            end
+    -- Apply X mult during scoring
+    if context.joker_main and card.ability.extra.x_mult > 1 then
+      return {
+        message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+        Xmult_mod = card.ability.extra.x_mult,
+        colour = G.C.MULT,
+      }
     end
+
+    -- Increment on unique purchases or booster pack opens
+    if (context.buying_card or context.open_booster) and not context.blueprint then
+      local purchase_key
+      if context.buying_card then
+        purchase_key = context.card.label or context.card.config.center.key
+      elseif context.open_booster then
+        purchase_key = context.card.config.center.key
+      end
+      
+      if purchase_key and not card.ability.extra.seen[purchase_key] then
+        card.ability.extra.seen[purchase_key] = true
+        card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_gain
+        
+        return {
+          message = localize('k_upgrade_ex'),
+        }
+      end
+    end
+  end
 }
 
 -- Neon
