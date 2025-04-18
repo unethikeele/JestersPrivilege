@@ -71,7 +71,7 @@ SMODS.Joker {
 }
 
 -- Draw Four
-SMODS.Joker { -- doesnt show upgrade thing
+SMODS.Joker { 
   key = "JPD4", 
   loc_txt = {
     name = 'Draw Four',
@@ -125,7 +125,10 @@ SMODS.Joker {
     text = {
       "All played face cards", 
       "become {C:attention}Stone{}",
-      "cards when scored",
+      "cards when scored"
+    },
+    unlock = {
+        "Defeat the {C:attention}Medusa{} Challenge"
     }
   },
   config = { },
@@ -133,8 +136,14 @@ SMODS.Joker {
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 3, y = 1 },
   cost = 7,
-  unlocked = true,
-  discovered = true, -- change later
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_medusa_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
@@ -150,7 +159,7 @@ SMODS.Joker {
                                 v:set_ability(G.P_CENTERS.m_stone, nil, true)
                                 G.E_MANAGER:add_event(Event({
                                     func = function()
-                                        v:juice_up()
+                                        card:juice_up()
                                         return true
                                     end
                                 })) 
@@ -173,16 +182,26 @@ SMODS.Joker {
   loc_txt = {
     name = 'Hermit Crab',
     text = {
-      "When {C:attention}Blind{} is selected", "{C:green}#1# in #2#{} chance to create", "a {C:tarot}Hermit{} card", "{C:inactive}(Must have room)"
-    }
+      "When {C:attention}Blind{} is selected", 
+      "{C:green}#1# in #2#{} chance to create", 
+      "a {C:tarot}Hermit{} card", 
+      "{C:inactive}(Must have room)"
+    },
+    unlock = {"Defeat the {C:attention}Rich get Richer{} Challenge"}
   },
   config = { extra = {odds = 6} },
   rarity = 1,
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 1, y = 1 },
   cost = 7,
-  unlocked = true,
-  discovered = true,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_rich_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
@@ -222,15 +241,22 @@ SMODS.Joker {
       "Currently {C:mult}+#1#{}",
       "{C:inactive}(Hand changes", 
       "{C:inactive}each time played){}"
-    }
+    },
+    unlock = {"Defeat the {C:attention}15 Minute City{} Challenge"},
   },
   config = { extra = {mult = 0, mult_gain = 3, poker_hand = "High Card"} },
   rarity = 1,
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 0, y = 1 },
   cost = 5,
-  unlocked = true,
-  discovered = true, -- change later
+  unlocked = false,
+  discovered = false, -- change later
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_xray_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = false,
   eternal_compat = true,
   perishable_compat = true,
@@ -277,15 +303,22 @@ SMODS.Joker {
       "All played cards", 
       "become {C:attention}Mult{}",
       "cards after scoring",
-    }
+    },
+    unlock = {"Defeat the {C:attention}Bram Poker{} Challenge"},
   },
   config = { },
-  rarity = 1,
+  rarity = 2,
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 4, y = 1 },
   cost = 7,
-  unlocked = true,
-  discovered = true, -- change later
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_bram_poker_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
@@ -301,7 +334,7 @@ SMODS.Joker {
                 context.other_card:set_ability(G.P_CENTERS.m_mult, nil, true)
             end
 		end
-end
+  end
 }
 
 -- Receipt
@@ -313,14 +346,21 @@ SMODS.Joker {
       "The {C:attention}sell value{} of this Joker", 
       "is equal to the {C:attention}sell value{}",
       "of all other {C:attention}Jokers{} combined"
-    }
+    },
+    unlock = {"Defeat the {C:attention}Inflation{} Challenge"},
   },
   rarity = 1,
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 4, y = 2 },
   cost = 5,
-  unlocked = true,
-  discovered = true,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_inflation_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
@@ -338,7 +378,7 @@ SMODS.Joker {
             end
         card.ability.extra_value = sell_cost
         card:set_cost()
-end
+  end
 }
 
 -- Breakout
@@ -351,15 +391,22 @@ SMODS.Joker {
       "this card has",
       "{X:mult,C:white}X#3#{}",
       "{C:inactive}(Currently {C:attention}#1#{C:inactive}/#2#)"
-    }
+    },
+    unlock = {"Defeat the {C:attention}Typecast{} Challenge"},
   },
   config = { extra = { c_rounds = 0, rounds = 10, x_mult = 4} },
   rarity = 2,
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 1, y = 2 },
   cost = 7,
-  unlocked = true,
-  discovered = true,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_typecast_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
@@ -443,7 +490,8 @@ SMODS.Joker { -- shout out to snoresvilleturbulentjokers pi joker
       "matches the next rank of the countdown",
       "Next ranks are: {C:attention}#3#, #4#, #5#, #6#, #7#{}",
       "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
-    }
+    },
+    unlock = {"Defeat the {C:attention}Blast Off{} Challenge"},
   },
   config = { extra = 
   { x_mult = 1, 
@@ -453,8 +501,14 @@ SMODS.Joker { -- shout out to snoresvilleturbulentjokers pi joker
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 3, y = 2 },
   cost = 7,
-  unlocked = true,
+  unlocked = false,
   discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_blast_off_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
@@ -541,7 +595,7 @@ SMODS.Joker {
   perishable_compat = true,
    loc_vars = function(self, info_queue, card)
     return {
-      vars = {G.GAME.probabilities.normal, card.ability.extra.odds,}
+      vars = {G.GAME.probabilities.normal, card.ability.extra.odds}
     }
   end,
 
@@ -572,15 +626,22 @@ SMODS.Joker {
     text = {
       "{C:green}#1# in #2#{} chance to create",
       "a {C:spectral}Familiar{} card",
-    }
+    },
+    unlock = {"Defeat the {C:attention}Mad World{} Challenge"},
   },
   config = { extra = {odds = 4} },
   rarity = 2,
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 2, y = 1 },
   cost = 6,
-  unlocked = true,
-  discovered = true, -- change later
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_mad_world_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
@@ -615,7 +676,8 @@ SMODS.Joker {
       "Gain {X:mult,C:white}X#2#{} for every", 
       "card in deck with a {C:attention}Seal", 
       "{C:inactive}Currently {X:mult,C:white}X#1#{} {C:inactive}Mult"
-    }
+    },
+    unlock = {"Defeat the {C:attention}Double or Nothing{} Challenge"},
   },
   config = { extra = 
   { x_mult = 1, 
@@ -624,8 +686,14 @@ SMODS.Joker {
   atlas = 'JestersPrivilegeAtlas',
   pos = { x = 2, y = 2 },
   cost = 7,
-  unlocked = true,
+  unlocked = false,
   discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_double_nothing_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
@@ -655,7 +723,7 @@ SMODS.Joker {
    end
 }
 
--- Microtransaction
+-- Microtransaction -- fixed by Saydyrya90 thanks slime
 SMODS.Joker { 
   key = 'JPMicrotransaction',
   loc_txt = {
@@ -758,150 +826,732 @@ SMODS.Joker {
 	end
 }
 
--- Handle with Care
--- SMODS.Joker {   -- idk why but doesnt reset
-  -- key = 'Handle with Care',
-  -- loc_txt = {
-    -- name = 'Handle with Care',
-    -- text = {
-      -- "Adds {X:mult,C:white}X#2#{} for every played", 
-      -- "{C:attention}Glass{} that does not shatter.", 
-      -- "Resets when a {C:attention}Glass{} is destroyed", 
-      -- "{C:inactive}Currently {X:mult,C:white}X#1#{} {C:inactive}Mult"
-    -- }
-  -- },
-  -- config = { extra = { x_mult = 1, x_mult_gain = 0.2 } },
-  -- rarity = 2,
-  -- atlas = 'JestersPrivilegeAtlas',
-  -- pos = { x = 4, y = 1 },
-  -- cost = 7,
-  -- unlocked = true,
-  -- discovered = true,
-  -- blueprint_compat = true,
-  -- eternal_compat = true,
-  -- perishable_compat = true,
+-- Money Laundering
+SMODS.Joker {
+  key = 'JPMoneyLaundering',
+  loc_txt = {
+    name = 'Money Laundering',
+    text = {
+      "Gain {C:attention}1{} extra hand size", 
+      "for every {C:money}$20{} you have", 
+      "{C:inactive}Currently {C:attention}+#2#{} hand size"
+    },
+    unlock = {"Defeat the {C:attention}Luxury Tax{} Challenge"},
+  },
+  config = { extra = { perDollar = 20, handSize = 0} },
+  rarity = 3,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 1, y = 4 },
+  cost = 9,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_luxury_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = true,
 
 
-  -- loc_vars = function(self, info_queue, card)
-    -- return { vars = {card.ability.extra.x_mult, card.ability.extra.x_mult_gain } }
-  -- end,
+  loc_vars = function(self, info_queue, center)
+    return { vars = {center.ability.extra.perDollar, center.ability.extra.handSize} }
+  end,
 
-  -- calculate = function(self, card, context)
-    -- if context.joker_main and card.ability.extra.x_mult > 1 then
-        -- return {
-            -- Xmult_mod = card.ability.extra.x_mult,
-            -- message = localize {type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}
-        -- }
-    -- end
-    -- if context.cardarea == G.play and context.individual and not context.blueprint then
-        -- if context.other_card.ability.effect == "Glass Card" then
-                -- card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_gain
-                -- return {
-                   --  message = "Upgrade",
-                    -- colour = G.C.RED,
-                    -- card = card
-                -- }
-        -- end
-    -- end
-    -- if context.cardarea == G.play and context.individual and not context.blueprint then
-            -- if context.remove_playing_cards then
-                -- for k, v in ipairs(context.removed) do
-                    -- if v.ability.effect == "Glass Card" then
-                       -- card.ability.extra.x_mult = 1
-                    -- end
-                -- end
-                    -- return {
-                    -- message = localize('k_reset'),
-                    -- colour = G.C.RED,
-                -- }
-            -- end
-            -- if context.cards_destroyed then
-                -- for k, v in ipairs(context.glass_shattered) do
-                    -- if v.shattered then
-                        -- card.ability.extra.x_mult = 1
-                    -- end
-                -- end
-                    -- return {
-                    -- message = localize('k_reset'),
-                    -- colour = G.C.RED,
-                -- }
-            -- end
-            -- if context.cards_destroyed then
-                -- for k, v in ipairs(context.cards_destroyed) do
-                    -- if v.shattered then
-                        -- card.ability.extra.x_mult = 1
-                    -- end
-                -- end
-                    -- return {
-                    -- message = localize('k_reset'),
-                    -- colour = G.C.RED,
-                -- }
-           --  end
-    -- end
-    -- end
--- }
+  calculate = function(self, card, context)
+    if context.first_hand_drawn and not context.blueprint then
+        local handmax = card.ability.extra.handSize
+			card.ability.extra.handSize = math.max(0, math.min(math.floor((G.GAME.dollars) / card.ability.extra.perDollar)))
+			if card.ability.extra.handSize ~= handmax then
+				G.hand:change_size(card.ability.extra.handSize - handmax)
+			end
+		end
+	end
+}
 
--- Combobreaker
--- SMODS.Joker { -- couldnt get it to work :( 
-  -- key = 'Combo',
-  -- loc_txt = {
-    -- name = 'Combo Breaker',
-    -- text = {
-      -- "If consecutive {C:attention}Hands{} are the same", 
-      -- "Poker Hand, this card gains {X:mult,C:white}X#2#{}.",
-      -- "When a different hand is played", 
-      -- "The stored {X:mult,C:white}XMult{} is used", 
-      -- "{C:inactive}Currently {X:mult,C:white}X#1#{} {C:inactive} Mult" 
-    -- }
-  -- },
-  -- config = { extra = { x_mult = 1, x_mult_gain = 0.5, last_hand_played = nil} },
-  -- rarity = 3,
-  -- atlas = 'JestersPrivilegeAtlas',
-  -- pos = { x = 1, y = 1 },
-  -- cost = 8,
-  -- unlocked = true,
-  -- discovered = true,
-  -- blueprint_compat = true,
-  -- eternal_compat = true,
-  -- perishable_compat = true,
+-- Minimize
+SMODS.Joker {
+  key = 'JPminimize',
+  loc_txt = {
+    name = 'Minimize',
+    text = {
+      "Gain {X:mult,C:white}X#2#{} for every", 
+      "hand size below {C:attention}8{}", 
+      "{C:inactive}Currently {X:mult,C:white}X#1#{} {C:inactive}Mult"
+    },
+    unlock = {"Defeat the {C:attention}Five-Card Draw{} Challenge"},
+  },
+  config = { extra = { x_mult = 1, x_mult_gain = 1 } },
+  rarity = 3,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 0, y = 5 },
+  cost = 6,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_five_card_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
 
-  -- loc_vars = function(self, info_queue, card)
-    -- return { vars = {card.ability.extra.x_mult, card.ability.extra.x_mult_gain, card.ability.extra.last_hand_played } }
-  -- end,
 
-  -- calculate = function(self, card, context)
-    -- if context.cardarea == G.jokers then
-        -- local hand = context.scoring_name
-        -- if context.before then
-            -- if hand == card.ability.extra.last_hand_played then
-                -- if not context.blueprint then
-                -- card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_gain
-                    -- return {
-                      -- message = "C-C-Combo",
-                      -- colour = G.C.MULT,
-                    -- }
-                -- end
-            -- end
-            -- if hand ~= card.ability.extra.last_hand_played then
-                -- if not context.blueprint then
-                    -- if card.ability.extra.x_mult > 1 then
-                        -- if context.joker_main then
-                             -- return {
-                                -- Xmult_mod = card.ability.extra.x_mult,
-                                -- message = localize, {type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}
-                             -- } 
-                        -- end
-                    -- end
-                -- card.ability.extra.x_mult = 1
-                    -- return {
-                        -- message = "BREAKER",
-                        -- colour = G.C.RED,
-                    -- }
-                -- end
-            -- end
-        -- elseif context.after and not context.blueprint then
-                -- card.ability.extra.last_hand_played = hand
-        -- end
-    -- end
-  -- end
--- }
+  loc_vars = function(self, info_queue, card)
+    return { vars = {card.ability.extra.x_mult, card.ability.extra.x_mult_gain } }
+  end,
+
+  calculate = function(self, card, context)
+    if context.first_hand_drawn and not context.blueprint then
+        local handcalc = 8 - #G.hand.cards
+        if handcalc > 0 then
+            card.ability.extra.x_mult = card.ability.extra.x_mult + (card.ability.extra.x_mult_gain * handcalc)
+            end
+            return {
+                message = localize {type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult} },
+                Xmult_mod = card.ability.extra.x_mult
+        }
+     end
+  end
+}
+
+-- Wall Hack 
+SMODS.Joker { 
+  key = "JPWallhack", 
+  loc_txt = {
+    name = 'Wallhacks',
+    text = {
+      "Flips and shuffles all",
+      "Joker cards. All {C:attention}scored{}",
+      "cards are retriggered"
+    },
+    unlock = {"Defeat the {C:attention}X-Ray{} Challenge"},
+  },
+  config = { extra = { repetition = 1} },
+  rarity = 1,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 0, y = 3 },
+  cost = 5,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_xray_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = true,
+  loc_vars = function(self, info_queue, card)
+    return { 
+        vars = {card.ability.extra.repetition} 
+    } 
+  end,
+
+  calculate = function(self, card, context) 
+    if context.setting_blind then
+        if #G.jokers.cards > 0 then
+            G.jokers:unhighlight_all()
+            for k, v in ipairs(G.jokers.cards) do
+                v:flip()
+            end
+            if #G.jokers.cards > 1 then 
+                    G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function() 
+                        G.E_MANAGER:add_event(Event({ func = function() G.jokers:shuffle('aajk'); play_sound('cardSlide1', 0.85);return true end })) 
+                        delay(0.15)
+                        G.E_MANAGER:add_event(Event({ func = function() G.jokers:shuffle('aajk'); play_sound('cardSlide1', 1.15);return true end })) 
+                        delay(0.15)
+                        G.E_MANAGER:add_event(Event({ func = function() G.jokers:shuffle('aajk'); play_sound('cardSlide1', 1);return true end })) 
+                        delay(0.5)
+                    return true end })) 
+            end
+        end
+    end
+    if context.repetition and context.cardarea == G.play then
+        return {
+                    message = localize('k_again_ex'),
+                    repetitions = card.ability.extra.repetition,
+                    card = card
+                }
+    end
+    if context.end_of_round and context.cardarea == G.jokers then
+        if #G.jokers.cards > 0 then
+            G.jokers:unhighlight_all()
+            for k, v in ipairs(G.jokers.cards) do
+                v:flip()
+            end
+        end
+    end
+  end
+}
+
+-- Fried
+SMODS.Joker {
+  key = 'JPFried',
+  loc_txt = {
+    name = 'Fried',
+    text = {
+      "At the end of the round",
+      "Earn $1 for each {C:attention}Joker{} card",  
+      "{C:inactive}Currently {C:money}$#1#{}"
+    },
+    unlock = {"Defeat {C:attention}The Omelette{} Challenge"},
+  },
+  config = { extra = { dollar_bonus = 0 } },
+  rarity = 2,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 1, y = 3 },
+  cost = 6,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_omelette_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+
+
+  loc_vars = function(self, info_queue, card)
+    return { vars = {card.ability.extra.dollar_bonus} }
+  end,
+
+  calculate = function(self, card, context)
+    if context.end_of_round and not context.blueprint then
+        card.ability.extra.dollar_bonus = 0
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.set == 'Joker' then card.ability.extra.dollar_bonus = card.ability.extra.dollar_bonus + 1 end
+        end
+    end
+    end,
+    calc_dollar_bonus = function(self, card)
+            local dollar_bonus = card.ability.extra.dollar_bonus
+
+            return dollar_bonus
+    end
+}
+
+-- Monolith - i give up and having it upgrade for every hand played that is most played hand, which is unfortunately like jimball but oh well, couldnt get least played hand to work
+SMODS.Joker {
+  key = 'JPMonolith',
+  loc_txt = {
+    name = 'Monolith',
+    text = {
+      "This Joker gains {X:mult,C:white}X#2#{} Mult per", 
+      "{C:attention}consecutive{} hand played", 
+      "which is your", 
+      "most played {C:attention}poker hand{}", 
+      "{C:inactive}Currently {X:mult,C:white}X#1#{} {C:inactive}Mult"
+    },
+    unlock = {"Defeat the {C:attention}Monolith{} Challenge"},
+  },
+  config = { extra = { x_mult = 1, x_mult_gain = 0.1 } },
+  rarity = 3,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 2, y = 3 },
+  cost = 8,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_monolith_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+
+  loc_vars = function(self, info_queue, card)
+    return { vars = {card.ability.extra.x_mult, card.ability.extra.x_mult_gain} }
+  end,
+
+  calculate = function(self, card, context)
+    if context.before and not context.blueprint then
+        local reset = false
+        local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
+        for k, v in pairs(G.GAME.hands) do
+            if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
+                reset = true
+            end
+        end
+        if reset then
+            if card.ability.extra.x_mult > 1 then
+                card.ability.extra.x_mult = 1
+                    return {
+                    card = card,
+                    message = localize('k_reset')
+                    }
+            end
+        else
+            card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_gain
+            return nil, true
+        end
+    end
+    if context.joker_main and not context.blueprint then
+        return {
+                message = localize {type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult} },
+                Xmult_mod = card.ability.extra.x_mult
+        }
+    end
+  end
+}
+
+-- Handle With Care 
+SMODS.Joker { 
+  key = "JPHandleWithCare", 
+  loc_txt = {
+    name = 'Handle With Care',
+    text = {
+      "Retrigger all scored", 
+      "{C:attention}Glass Cards{}" 
+    },
+    unlock = {"Defeat the {C:attention}Fragile{} Challenge"},
+  },
+  config = { extra = {repetition = 1} },
+  rarity = 3,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 3, y = 3 },
+  cost = 5,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_fragile_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = true,
+  loc_vars = function(self, info_queue, card)
+    return { 
+        vars = {card.ability.extra.repetition} 
+    } 
+  end,
+
+  calculate = function(self, card, context)
+    if context.repetition and context.cardarea == G.play then
+        if context.other_card.ability.name == 'Glass Card' then
+            return {
+                    message = localize('k_again_ex'),
+                    repetitions = card.ability.extra.repetition,
+                    card = card
+                }
+        end
+    end
+  end
+}
+
+-- BlackJack
+SMODS.Joker {
+  key = 'JPBlackJack',
+  loc_txt = {
+    name = 'Black Jack',
+    text = {
+      "This Joker gains {C:chips}#2#{} Chips", 
+      "for every {C:black}Black{} {C:attention}Jack{} played",
+      "{C:inactive}Currently {C:chips}#1#{} {C:inactive}Chips" 
+    }
+  },
+  config = { extra = { chips = 0, chips_gain = 21} },
+  rarity = 1,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 4, y = 3 },
+  cost = 4,
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+
+  loc_vars = function(self, info_queue, card)
+    return { vars = {card.ability.extra.chips, card.ability.extra.chips_gain} }
+  end,
+
+  calculate = function(self, card, context)
+    if context.joker_main and card.ability.extra.chips > 0 then 
+        return {
+            chips_gain = card.ability.extra.chips,
+            message = localize {type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}
+         }
+    end
+    if context.individual and context.cardarea == G.play then
+        if context.other_card:is_suit("Spades") and context.other_card:get_id() == 11 then
+                    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_gain
+                        return {
+                          message = localize('k_upgrade_ex'),
+                          colour = G.C.CHIPS,
+                          card = card
+                        }
+        end
+        if context.other_card:is_suit("Clubs") and context.other_card:get_id() == 11 then
+                    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_gain
+                        return {
+                          message = localize('k_upgrade_ex'),
+                          colour = G.C.CHIPS,
+                          card = card
+                        }
+        end
+    end
+  end
+}
+
+--Pocket Aces
+SMODS.Joker { 
+  key = "JPPocketAces", 
+  loc_txt = {
+    name = 'Pocket Aces',
+    text = {
+      "If hand contains a {C:attention}Pair{}", 
+      "of {C:attention}Aces{}, they are", 
+      "Retriggered"
+    }
+  },
+  config = { extra = {repetition = 1} },
+  rarity = 2,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 0, y = 4 },
+  cost = 5,
+  unlocked = true,
+  discovered = true, -- change later
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = true,
+  loc_vars = function(self, info_queue, card)
+    return { 
+        vars = {card.ability.extra.repetitions} 
+    } 
+  end,
+
+  calculate = function(self, card, context)
+    if context.repetition and context.cardarea == G.play and context.poker_hands then
+        if context.other_card:get_id() == 14 then 
+            if next(context.poker_hands['Pair']) then
+                return {
+                    message = localize('k_again_ex'),
+                    repetitions = card.ability.extra.repetition,
+                    card = card
+                }
+                end
+            end
+        end
+    end
+}
+
+--Make it Rain
+SMODS.Joker {
+  key = 'JPRiskofRain',
+  loc_txt = {
+    name = 'Make it Rain',
+    text = {
+      "This Joker gains {C:chips}Chips{} equal", 
+      "to quadruple the value of this",
+      "Joker at the end of the round",
+      "{C:inactive}Currently {C:chips}#1#{} {C:inactive}Chips" 
+    },
+    unlock = {"Defeat the", 
+              "{C:attention}On a Knife's Edge{} Challenge"},
+  },
+  config = { extra = { chips = 0, chips_gain = 2} },
+  rarity = 1,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 4, y = 4 },
+  cost = 6,
+  unlocked = false,
+  discovered = false,
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_knife_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+
+  loc_vars = function(self, info_queue, card)
+    return { vars = {card.ability.extra.chips, card.ability.extra.chips_gain} }
+  end,
+
+  calculate = function(self, card, context)
+        if context.end_of_round and not context.individual and not context.blueprint then
+                card.ability.extra.chips = (card.ability.extra.chips + (card.ability.extra.chips_gain * card.sell_cost) / 2) -- dont ask, i dont know why but it was being multiplied by 8 without the /2 
+                    return {
+                      message = localize('k_upgrade_ex'),
+                      colour = G.C.CHIPS,
+                      card = card
+                    }
+        end
+        if context.joker_main then
+                return {
+                    message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+                    chips_gain = card.ability.extra.chips
+                }
+        end
+  end
+}
+
+--Sommers
+SMODS.Joker { 
+  key = "JPSommers", 
+  loc_txt = {
+    name = 'Sommers',
+    text = {
+      "Retrigger all {C:attention}Queens{}",
+      "three times"
+    },
+    unlock = {"Defeat the {C:attention}Golden Needle{} Challenge"},
+  },
+  config = { extra = {repetition = 3} },
+  rarity = 4,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 4, y = 5 },
+  soul_pos = { x = 0, y = 6},
+  cost = 20,
+  unlocked = false,
+  discovered = false, 
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_golden_needle_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = true,
+  loc_vars = function(self, info_queue, card)
+    return { 
+        vars = {card.ability.extra.repetitions} 
+    } 
+  end,
+
+  calculate = function(self, card, context)
+    if context.repetition and context.cardarea == G.play then
+        if context.other_card:get_id() == 12 then
+                return {
+                    message = localize('k_again_ex'),
+                    repetitions = card.ability.extra.repetition,
+                    card = card
+                }
+            end
+        end
+    end
+}
+
+-- Fleeman
+SMODS.Joker { 
+  key = "JPFleeman", 
+  loc_txt = {
+    name = 'Fleeman',
+    text = {
+      "Create a {C:tarot}Fool{} for every",
+      "{C:attention}Item{} purchased in the shop",
+      "or {C:attention}Booster Pack{} opened",
+      "{C:inactive}Must have room"
+    },
+    unlock = {"Defeat the {C:attention}Jokerless{} Challenge"},
+  },
+  config = {},
+  rarity = 4,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 2, y = 5 },
+  soul_pos = { x = 2, y = 6},
+  cost = 20,
+  unlocked = false,
+  discovered = false, 
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_jokerless_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = true,
+  loc_vars = function(self, info_queue, card)
+    return { 
+        vars = {} 
+    } 
+  end,
+
+  calculate = function(self, card, context)
+    if context.buying_card or context.open_booster and not context.blueprint and not (context.card == card) then
+        if #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                    G.E_MANAGER:add_event(Event({
+                      trigger = 'before',
+                      delay = 0.0,
+                          func = (function()
+                              local card = create_card('Tarot',G.consumeables, nil, nil, nil, nil, 'c_fool')
+                              card:add_to_deck()
+                              G.consumeables:emplace(card)
+                              G.GAME.consumeable_buffer = 0
+                              return true
+                          end)}))
+                    end
+        end
+    end
+}
+
+--Hudson
+SMODS.Joker { 
+  key = "JPHudson", 
+  loc_txt = {
+    name = 'Hudson',
+    text = {
+      "This card gains {X:mult,C:white}X#2#{} Mult",
+      "for every {C:attention}High Card{} played",
+      "{C:inactive}Currently {X:mult,C:white}X#1#{} {C:inactive}Mult"
+    },
+    unlock = {"Defeat the {C:attention}Cruelty{} Challenge"},
+  },
+  config = { extra = { x_mult = 1, x_mult_gain = 0.25 } },
+  rarity = 4,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 3, y = 5 },
+  soul_pos = { x = 1, y = 6},
+  cost = 20,
+  unlocked = false,
+  discovered = false, 
+  check_for_unlock = function(self, args)
+        if args.type == 'win_challenge' and G.GAME.challenge == 'c_cruelty_1' then
+            self.challenge_bypass = true
+            unlock_card(self)
+        end
+    end,
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = true,
+  loc_vars = function(self, info_queue, card)
+    return { vars = {card.ability.extra.x_mult, card.ability.extra.x_mult_gain } }
+  end,
+
+  calculate = function(self, card, context)
+    if context.joker_main and not context.blueprint and context.cardarea == G.jokers then
+        if context.scoring_hand and context.scoring_hand == "High Card" then
+            card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_gain
+                G.E_MANAGER:add_event(Event({
+                func = function()
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}); return true
+                    end
+            }))
+            end
+            return {
+                message = localize {type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult} },
+                Xmult_mod = card.ability.extra.x_mult
+             }
+        end
+    end
+}
+
+-- Keycard
+SMODS.Joker {
+  key = 'JPKeycard',
+  loc_txt = {
+    name = 'Keycard',
+    text = {
+      "Create a {C:attention}Tag{} at the", 
+      "end of the {C:attention}shop"
+    }
+  },
+  config = {},
+  rarity = 3,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 3, y = 4 },
+  cost = 4,
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = true,
+
+  loc_vars = function(self, info_queue, card)
+    return { vars = {} }
+  end,
+
+  calculate = function(self, card, context)
+    if context.ending_shop and not context.blueprint then
+        G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+                    if G.FORCE_TAG then return G.FORCE_TAG end
+                    local i = 1
+                    while i <= 1 do
+                        local _pool, _pool_key = get_current_pool('Tag', nil, nil, nil)
+                        local _tag_name = pseudorandom_element(_pool, pseudoseed(_pool_key))
+                        local it = 1
+                        while _tag_name == 'UNAVAILABLE' or _tag_name == "tag_double" or _tag_name == "tag_orbital" do
+                            it = it + 1
+                            _tag_name = pseudorandom_element(_pool, pseudoseed(_pool_key .. '_resample' .. it))
+                        end
+
+                        G.GAME.round_resets.blind_tags = G.GAME.round_resets.blind_tags or {}
+                        local _tag = Tag(_tag_name, nil, G.GAME.blind)
+                        add_tag(_tag)
+                        i = i + 1
+                    end
+                    return true
+                end
+            }))
+    end
+  end
+}
+
+--Grim Reaper
+SMODS.Joker {
+  key = 'JPGrim',
+  loc_txt = {
+    name = "Grim Reaper",
+    text = {
+      "This card gains {X:mult,C:white}X#2#{} Mult",
+      "for every {C:tarot}Death{} used",
+      "{C:inactive}Currently {X:mult,C:white}X#1#{} {C:inactive}Mult"
+    }
+  },
+  config = { extra = { x_mult = 1, x_mult_gain = 0.2 } },
+  rarity = 2,
+  atlas = 'JestersPrivilegeAtlas',
+  pos = { x = 1, y = 5 },
+  cost = 7,
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+
+  loc_vars = function(self, info_queue, card)
+    return { vars = {card.ability.extra.x_mult, card.ability.extra.x_mult_gain} }
+  end,
+
+  calculate = function(self, card, context)
+      if context.using_consumeable and not context.blueprint then
+        if context.consumeable.ability.name == "Death" then
+            card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_gain
+                G.E_MANAGER:add_event(Event({
+                        func = function()
+                            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}); return true
+                            end
+                    }))
+        end
+      end
+      if context.joker_main and not context.before and not context.after then
+        return {
+            message = localize {type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult} },
+            Xmult_mod = card.ability.extra.x_mult
+            }
+      end
+        
+  end
+}
+
+
