@@ -59,5 +59,5 @@
 **Sommers** _Legendary_ Retrigger all Queens 3 times 
 
 
-Grim Reaper _Uncommon_ Gain 0.2x Mult for every Death used.
+**Grim Reaper** _Uncommon_ Gain 0.2x Mult for every Death used.
 
